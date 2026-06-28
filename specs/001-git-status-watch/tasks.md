@@ -28,9 +28,9 @@ Single Rust binary crate: `src/` and `tests/` at repository root, `Cargo.toml` a
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Cargo binary crate named `git-monitor` (set `package.name = "git-monitor"` and a `[[bin]]` named `git-monitor`) and declare dependencies in `Cargo.toml` (deps: `ratatui`, `crossterm`, `git2`, `clap` with `derive`, `anyhow`; dev-deps: `tempfile`)
-- [ ] T002 [P] Create module skeleton files with empty stubs: `src/main.rs`, `src/cli.rs`, `src/app.rs`, `src/model.rs`, `src/git/mod.rs`, `src/git/repo.rs`, `src/git/format.rs`, `src/ui/mod.rs`, `src/ui/render.rs`
-- [ ] T003 [P] Add `rustfmt.toml`, a clippy lint config, and `.gitignore` entry for `target/` at repository root
+- [X] T001 Initialize Cargo binary crate named `git-monitor` (set `package.name = "git-monitor"` and a `[[bin]]` named `git-monitor`) and declare dependencies in `Cargo.toml` (deps: `ratatui`, `crossterm`, `git2`, `clap` with `derive`, `anyhow`; dev-deps: `tempfile`)
+- [X] T002 [P] Create module skeleton files with empty stubs: `src/main.rs`, `src/cli.rs`, `src/app.rs`, `src/model.rs`, `src/git/mod.rs`, `src/git/repo.rs`, `src/git/format.rs`, `src/ui/mod.rs`, `src/ui/render.rs`
+- [X] T003 [P] Add `rustfmt.toml`, a clippy lint config, and `.gitignore` entry for `target/` at repository root
 
 ---
 
@@ -40,13 +40,13 @@ Single Rust binary crate: `src/` and `tests/` at repository root, `Cargo.toml` a
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T004 [P] Define domain types in `src/model.rs`: `RepoSnapshot`, `BranchInfo`, `StatusGroups`, `FileChange`, `ChangeKind` (enum), `CommitInfo`, plus the `is_clean` helper — per data-model.md
-- [ ] T005 Implement repository open/discover with a not-a-repo error path in `src/git/repo.rs` (`open_repo(path) -> anyhow::Result<Repository>` using `Repository::discover`)
-- [ ] T006 [P] Implement terminal lifecycle guard in `src/app.rs`: enable raw mode + enter alternate screen on start, and guarantee restore (leave alt screen, disable raw mode) on every exit path (RAII drop guard)
-- [ ] T007 Implement the base CLI argument struct in `src/cli.rs` (clap derive) with NO directory argument yet, plus a `target_dir()` accessor that returns the current working directory (sole path-resolution point)
-- [ ] T008 Implement the app event/refresh loop skeleton in `src/app.rs`: `crossterm::event::poll(~500ms)` tick, quit on `q`/`Esc`/`Ctrl-C`, and a refresh→render cycle that rebuilds a `RepoSnapshot` (depends on T004, T005, T006)
-- [ ] T009 [P] Implement the UI shell in `src/ui/render.rs`: a `Layout` with a horizontal divider (status pane on top, commits pane on bottom) and a `render(frame, &RepoSnapshot)` dispatch that draws empty panes for now (depends on T004)
-- [ ] T010 Wire `src/main.rs`: parse args → resolve target path → `open_repo` (on error: message to stderr, exit code 1) → run the app loop (depends on T005, T007, T008)
+- [X] T004 [P] Define domain types in `src/model.rs`: `RepoSnapshot`, `BranchInfo`, `StatusGroups`, `FileChange`, `ChangeKind` (enum), `CommitInfo`, plus the `is_clean` helper — per data-model.md
+- [X] T005 Implement repository open/discover with a not-a-repo error path in `src/git/repo.rs` (`open_repo(path) -> anyhow::Result<Repository>` using `Repository::discover`)
+- [X] T006 [P] Implement terminal lifecycle guard in `src/app.rs`: enable raw mode + enter alternate screen on start, and guarantee restore (leave alt screen, disable raw mode) on every exit path (RAII drop guard)
+- [X] T007 Implement the base CLI argument struct in `src/cli.rs` (clap derive) with NO directory argument yet, plus a `target_dir()` accessor that returns the current working directory (sole path-resolution point)
+- [X] T008 Implement the app event/refresh loop skeleton in `src/app.rs`: `crossterm::event::poll(~500ms)` tick, quit on `q`/`Esc`/`Ctrl-C`, and a refresh→render cycle that rebuilds a `RepoSnapshot` (depends on T004, T005, T006)
+- [X] T009 [P] Implement the UI shell in `src/ui/render.rs`: a `Layout` with a horizontal divider (status pane on top, commits pane on bottom) and a `render(frame, &RepoSnapshot)` dispatch that draws empty panes for now (depends on T004)
+- [X] T010 Wire `src/main.rs`: parse args → resolve target path → `open_repo` (on error: message to stderr, exit code 1) → run the app loop (depends on T005, T007, T008)
 
 **Checkpoint**: App launches in a repo, shows an empty split layout, refreshes on a tick, and quits cleanly restoring the terminal.
 
@@ -60,14 +60,14 @@ Single Rust binary crate: `src/` and `tests/` at repository root, `Cargo.toml` a
 
 ### Tests for User Story 1
 
-- [ ] T011 [P] [US1] Integration test in `tests/status_reads.rs`: build a fixture repo (`tempfile` + `git2`), assert `RepoSnapshot` reports correct branch name, the three status groups for untracked/staged/unstaged files, and `is_clean == true` for a clean tree
+- [X] T011 [P] [US1] Integration test in `tests/status_reads.rs`: build a fixture repo (`tempfile` + `git2`), assert `RepoSnapshot` reports correct branch name, the three status groups for untracked/staged/unstaged files, and `is_clean == true` for a clean tree
 
 ### Implementation for User Story 1
 
-- [ ] T012 [P] [US1] Implement current-branch read into `BranchInfo` (incl. detached-HEAD and unborn-branch detection) in `src/git/repo.rs`
-- [ ] T013 [US1] Implement working-tree status read into `StatusGroups` / `FileChange` / `ChangeKind` using `git2` `statuses` with `StatusOptions` (include untracked) in `src/git/repo.rs` (same file as T012)
-- [ ] T014 [US1] Render the top status pane in `src/ui/render.rs`: branch header, three labeled groups with per-file change indicators, and the clean-tree indicator (FR-005, FR-012)
-- [ ] T015 [US1] Populate `RepoSnapshot.branch` and `RepoSnapshot.status` on each refresh tick in `src/app.rs` (depends on T012, T013)
+- [X] T012 [P] [US1] Implement current-branch read into `BranchInfo` (incl. detached-HEAD and unborn-branch detection) in `src/git/repo.rs`
+- [X] T013 [US1] Implement working-tree status read into `StatusGroups` / `FileChange` / `ChangeKind` using `git2` `statuses` with `StatusOptions` (include untracked) in `src/git/repo.rs` (same file as T012)
+- [X] T014 [US1] Render the top status pane in `src/ui/render.rs`: branch header, three labeled groups with per-file change indicators, and the clean-tree indicator (FR-005, FR-012)
+- [X] T015 [US1] Populate `RepoSnapshot.branch` and `RepoSnapshot.status` on each refresh tick in `src/app.rs` (depends on T012, T013)
 
 **Checkpoint**: MVP — branch + live status fully functional and independently testable; commits pane may remain empty.
 
@@ -81,15 +81,15 @@ Single Rust binary crate: `src/` and `tests/` at repository root, `Cargo.toml` a
 
 ### Tests for User Story 2
 
-- [ ] T016 [P] [US2] Integration test in `tests/commit_reads.rs`: fixture repo with >10 commits → `RepoSnapshot.commits` has exactly 10, newest-first, each with short hash, summary, relative date, and author
-- [ ] T017 [P] [US2] Unit test for the relative-date formatting helper (seconds/hours/days ago) as an inline `#[cfg(test)]` module in `src/git/format.rs`
+- [X] T016 [P] [US2] Integration test in `tests/commit_reads.rs`: fixture repo with >10 commits → `RepoSnapshot.commits` has exactly 10, newest-first, each with short hash, summary, relative date, and author
+- [X] T017 [P] [US2] Unit test for the relative-date formatting helper (seconds/hours/days ago) as an inline `#[cfg(test)]` module in `src/git/format.rs`
 
 ### Implementation for User Story 2
 
-- [ ] T018 [US2] Implement recent-commits read in `src/git/repo.rs`: revwalk from HEAD, cap at 10, map each to `CommitInfo` (short id, summary, author, time)
-- [ ] T019 [US2] Implement the relative-date formatting helper in `src/git/format.rs` (same file as T017; write after the test)
-- [ ] T020 [US2] Render the bottom commits pane in `src/ui/render.rs`: one row per commit showing hash · summary · relative date · author (FR-006)
-- [ ] T021 [US2] Populate `RepoSnapshot.commits` on each refresh tick in `src/app.rs` (depends on T018)
+- [X] T018 [US2] Implement recent-commits read in `src/git/repo.rs`: revwalk from HEAD, cap at 10, map each to `CommitInfo` (short id, summary, author, time)
+- [X] T019 [US2] Implement the relative-date formatting helper in `src/git/format.rs` (same file as T017; write after the test)
+- [X] T020 [US2] Render the bottom commits pane in `src/ui/render.rs`: one row per commit showing hash · summary · relative date · author (FR-006)
+- [X] T021 [US2] Populate `RepoSnapshot.commits` on each refresh tick in `src/app.rs` (depends on T018)
 
 **Checkpoint**: Both panes populated and live; US1 and US2 work independently.
 
@@ -103,12 +103,12 @@ Single Rust binary crate: `src/` and `tests/` at repository root, `Cargo.toml` a
 
 ### Tests for User Story 3
 
-- [ ] T022 [P] [US3] Integration test in `tests/cli.rs`: invoking with an explicit fixture-repo path targets that repo; invoking with a non-git path produces a stderr message and exit code 1
+- [X] T022 [P] [US3] Integration test in `tests/cli.rs`: invoking with an explicit fixture-repo path targets that repo; invoking with a non-git path produces a stderr message and exit code 1
 
 ### Implementation for User Story 3
 
-- [ ] T023 [US3] Add the optional positional `DIRECTORY` argument to the CLI struct and extend `target_dir()` to return it when present (else cwd) in `src/cli.rs` (FR-003)
-- [ ] T024 [US3] Validate the target is a git repository before entering the TUI; on failure print a clear message to stderr and exit with code 1 in `src/main.rs` (FR-010, SC-005)
+- [X] T023 [US3] Add the optional positional `DIRECTORY` argument to the CLI struct and extend `target_dir()` to return it when present (else cwd) in `src/cli.rs` (FR-003)
+- [X] T024 [US3] Validate the target is a git repository before entering the TUI; on failure print a clear message to stderr and exit with code 1 in `src/main.rs` (FR-010, SC-005)
 
 **Checkpoint**: All three user stories independently functional.
 
@@ -118,12 +118,12 @@ Single Rust binary crate: `src/` and `tests/` at repository root, `Cargo.toml` a
 
 **Purpose**: Robustness and edge cases that span stories
 
-- [ ] T025 [P] Display detached-HEAD (`HEAD detached at <short-hash>`) and unborn-branch states in `src/ui/render.rs` (edge cases)
-- [ ] T026 [P] Handle terminal resize and content overflow (truncate or indicate overflow without corrupting layout) in `src/ui/render.rs` (FR-013, edge cases)
-- [ ] T027 [P] Skip redraw when the new `RepoSnapshot` equals the previous one, to reduce flicker, in `src/app.rs`
-- [ ] T028 [P] Add header (repo path) and footer keybind hint (`[q] quit`) per the display contract in `src/ui/render.rs`
-- [ ] T029 [P] Write `README.md` usage section and ensure `cargo fmt --check` and `cargo clippy -- -D warnings` pass
-- [ ] T030 Run `quickstart.md` validation: all user-story scenarios, edge checks, and the read-only guarantee (SC-006)
+- [X] T025 [P] Display detached-HEAD (`HEAD detached at <short-hash>`) and unborn-branch states in `src/ui/render.rs` (edge cases)
+- [X] T026 [P] Handle terminal resize and content overflow (truncate or indicate overflow without corrupting layout) in `src/ui/render.rs` (FR-013, edge cases)
+- [X] T027 [P] Skip redraw when the new `RepoSnapshot` equals the previous one, to reduce flicker, in `src/app.rs`
+- [X] T028 [P] Add header (repo path) and footer keybind hint (`[q] quit`) per the display contract in `src/ui/render.rs`
+- [X] T029 [P] Write `README.md` usage section and ensure `cargo fmt --check` and `cargo clippy -- -D warnings` pass
+- [X] T030 Run `quickstart.md` validation: all user-story scenarios, edge checks, and the read-only guarantee (SC-006)
 
 ---
 
