@@ -21,9 +21,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install libgit2 build deps
-        run: sudo apt-get update && sudo apt-get install -y pkg-config libssl-dev
-
       - uses: dtolnay/rust-toolchain@stable
         with:
           components: rustfmt, clippy
@@ -55,10 +52,6 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install libgit2 build deps
-        if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y pkg-config libssl-dev
 
       - uses: dtolnay/rust-toolchain@stable
         with:
